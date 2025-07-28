@@ -2,17 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { H3 } from "@/components/ui/typography";
+import { supabase } from "@/lib/supabaseClient";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -45,8 +39,8 @@ const sidebarItems = [
     ),
   },
   {
-    name: "Vitals",
-    href: "/dashboard/vitals",
+    name: "Patients",
+    href: "/dashboard/patients",
     icon: (
       <svg
         className="h-5 w-5"
@@ -58,7 +52,7 @@ const sidebarItems = [
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 002 2v2a2 2 0 002 2h6a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 00-2 2v6a2 2 0 01-2 2H11a2 2 0 01-2-2z"
+          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
         />
       </svg>
     ),
@@ -111,24 +105,20 @@ const sidebarItems = [
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
-  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const router = useRouter();
 
-  const handleLogout = () => {
-    console.log("Logout clicked");
-    // Add logout logic here
-    window.location.href = "/";
-  };
-
-  const handleProfile = () => {
-    console.log("Profile clicked");
-    // Add profile logic here
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout failed:", error.message);
+    } else {
+      router.push("/");
+    }
   };
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
       <div className="w-64 bg-white shadow-sm border-r">
-        {/* Logo */}
         <div className="p-6 border-b">
           <div className="flex items-center space-x-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
@@ -150,7 +140,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        {/* Navigation */}
         <nav className="p-4 flex-1">
           <ul className="space-y-2">
             {sidebarItems.map((item) => (
@@ -171,7 +160,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </ul>
         </nav>
 
-        {/* Logout Button */}
         <div className="p-4 border-t mt-auto">
           <Button
             variant="ghost"
@@ -196,72 +184,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
         <header className="bg-white shadow-sm border-b px-6 py-4">
           <div className="flex items-center justify-end">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="relative h-10 w-10 rounded-full"
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                >
-                  <Avatar>
-                    <AvatarImage src="" alt="User Avatar" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              {dropdownOpen && (
-                <DropdownMenuContent align="end" className="w-56 mt-2">
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={handleProfile}
-                  >
-                    <svg
-                      className="mr-2 h-4 w-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="cursor-pointer text-red-600"
-                    onClick={handleLogout}
-                  >
-                    <svg
-                      className="mr-2 h-4 w-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                      />
-                    </svg>
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              )}
-            </DropdownMenu>
+            <Avatar>
+              <AvatarImage src="" alt="User Avatar" />
+              <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
           </div>
         </header>
 
-        {/* Page Content */}
         <main className="flex-1 p-6 overflow-auto">{children}</main>
       </div>
     </div>
