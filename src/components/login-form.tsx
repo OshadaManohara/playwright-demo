@@ -94,7 +94,10 @@ export function LoginForm() {
   }, [router]);
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-4">
+    <div
+      className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-4"
+      data-testid="login-form-container"
+    >
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
@@ -109,6 +112,7 @@ export function LoginForm() {
             variant="outline"
             type="button"
             className="w-full"
+            data-testid="github-signin-button"
             onClick={handleGitHubSignIn}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -135,6 +139,7 @@ export function LoginForm() {
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-4"
+              data-testid="login-form"
             >
               <FormField
                 control={form.control}
@@ -146,6 +151,7 @@ export function LoginForm() {
                       <Input
                         type="email"
                         placeholder="Enter your email"
+                        data-testid="email-input"
                         {...field}
                       />
                     </FormControl>
@@ -163,6 +169,7 @@ export function LoginForm() {
                       <Input
                         type="password"
                         placeholder="Enter your password"
+                        data-testid="password-input"
                         {...field}
                       />
                     </FormControl>
@@ -173,6 +180,7 @@ export function LoginForm() {
               <Button
                 type="submit"
                 className="w-full"
+                data-testid="login-submit-button"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? "Signing in..." : "Sign In"}

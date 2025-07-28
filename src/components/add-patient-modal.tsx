@@ -125,16 +125,27 @@ export function AddPatientModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className="max-w-2xl max-h-[90vh] overflow-y-auto"
+        data-testid="add-patient-modal"
+      >
         <DialogHeader>
           <DialogTitle>Add New Patient</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-6"
+          data-testid="add-patient-form"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="first_name">First Name *</Label>
-              <Input id="first_name" {...register("first_name")} />
+              <Input
+                id="first_name"
+                data-testid="first-name-input"
+                {...register("first_name")}
+              />
               {errors.first_name && (
                 <p className="text-sm text-destructive">
                   {errors.first_name.message}
@@ -144,7 +155,11 @@ export function AddPatientModal({
 
             <div className="space-y-2">
               <Label htmlFor="last_name">Last Name *</Label>
-              <Input id="last_name" {...register("last_name")} />
+              <Input
+                id="last_name"
+                data-testid="last-name-input"
+                {...register("last_name")}
+              />
               {errors.last_name && (
                 <p className="text-sm text-destructive">
                   {errors.last_name.message}
@@ -154,7 +169,12 @@ export function AddPatientModal({
 
             <div className="space-y-2">
               <Label htmlFor="birth_da">Birth Date *</Label>
-              <Input id="birth_da" type="date" {...register("birth_date")} />
+              <Input
+                id="birth_da"
+                type="date"
+                data-testid="birth-date-input"
+                {...register("birth_date")}
+              />
               {errors.birth_date && (
                 <p className="text-sm text-destructive">
                   {errors.birth_date.message}
@@ -164,7 +184,12 @@ export function AddPatientModal({
 
             <div className="space-y-2">
               <Label htmlFor="email">Email *</Label>
-              <Input id="email" type="email" {...register("email")} />
+              <Input
+                id="email"
+                type="email"
+                data-testid="email-input"
+                {...register("email")}
+              />
               {errors.email && (
                 <p className="text-sm text-destructive">
                   {errors.email.message}
@@ -174,7 +199,12 @@ export function AddPatientModal({
 
             <div className="space-y-2">
               <Label htmlFor="phone">Phone *</Label>
-              <Input id="phone" type="tel" {...register("phone")} />
+              <Input
+                id="phone"
+                type="tel"
+                data-testid="phone-input"
+                {...register("phone")}
+              />
               {errors.phone && (
                 <p className="text-sm text-destructive">
                   {errors.phone.message}
@@ -186,6 +216,7 @@ export function AddPatientModal({
               <Label htmlFor="address_line_1">Address Line 1 *</Label>
               <Input
                 id="address_line_1"
+                data-testid="address-line-1-input"
                 {...register("address_line_1")}
                 placeholder="123 Main St"
               />
@@ -200,6 +231,7 @@ export function AddPatientModal({
               <Label htmlFor="adress_line_2">Address Line 2</Label>
               <Input
                 id="adress_line_2"
+                data-testid="address-line-2-input"
                 {...register("address_line_2")}
                 placeholder="Apartment or Suite #"
               />
@@ -213,6 +245,7 @@ export function AddPatientModal({
               <Label htmlFor="address_city">City *</Label>
               <Input
                 id="address_city"
+                data-testid="city-input"
                 {...register("address_city")}
                 placeholder="Colombo"
               />
@@ -225,7 +258,11 @@ export function AddPatientModal({
 
             <div className="space-y-2">
               <Label htmlFor="zipcode">ZIP Code *</Label>
-              <Input id="zipcode" {...register("zipcode")} />
+              <Input
+                id="zipcode"
+                data-testid="zipcode-input"
+                {...register("zipcode")}
+              />
               {errors.zipcode && (
                 <p className="text-sm text-destructive">
                   {errors.zipcode.message}
@@ -238,6 +275,7 @@ export function AddPatientModal({
               <Select
                 value={watchedGender}
                 onValueChange={(value) => setValue("gender", value)}
+                data-testid="gender-select"
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select gender" />
@@ -262,12 +300,17 @@ export function AddPatientModal({
             <Button
               type="button"
               variant="outline"
+              data-testid="cancel-button"
               onClick={handleCancel}
               disabled={isSubmitting}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              data-testid="submit-button"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Adding Patient..." : "Add Patient"}
             </Button>
           </DialogFooter>

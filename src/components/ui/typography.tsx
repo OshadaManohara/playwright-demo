@@ -66,6 +66,7 @@ const H1 = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h1
     ref={ref}
+    data-testid="h1"
     className={cn(headingVariants({ level: "h1" }), className)}
     {...props}
   />
@@ -90,6 +91,7 @@ const H3 = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
+    data-testid="h3"
     className={cn(headingVariants({ level: "h3" }), className)}
     {...props}
   />
@@ -116,6 +118,7 @@ const P = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
   ({ className, size, ...props }, ref) => (
     <p
       ref={ref}
+      data-testid="paragraph"
       className={cn(
         paragraphVariants({ size }),
         "[&:not(:first-child)]:mt-1",

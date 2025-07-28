@@ -117,9 +117,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <div className="w-64 bg-white shadow-sm border-r">
-        <div className="p-6  py-4 border-b">
+    <div className="flex h-screen bg-gray-100" data-testid="dashboard-layout">
+      <div className="w-64 bg-white shadow-sm border-r" data-testid="sidebar">
+        <div className="p-6  py-4 border-b" data-testid="sidebar-header">
           <div className="flex items-center space-x-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <svg
@@ -140,12 +140,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        <nav className="p-4 flex-1">
+        <nav className="p-4 flex-1" data-testid="sidebar-nav">
           <ul className="space-y-2">
             {sidebarItems.map((item) => (
               <li key={item.name}>
                 <Link
                   href={item.href}
+                  data-testid={`nav-${item.name.toLowerCase()}`}
                   className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     pathname === item.href
                       ? "bg-primary text-primary-foreground"
@@ -160,10 +161,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </ul>
         </nav>
 
-        <div className="p-4 border-t mt-auto">
+        <div className="p-4 border-t mt-auto" data-testid="sidebar-footer">
           <Button
             variant="ghost"
             className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+            data-testid="logout-button"
             onClick={handleLogout}
           >
             <svg
@@ -184,17 +186,22 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col">
-        <header className="bg-white shadow-xm border-b px-6 py-4">
+      <div className="flex-1 flex flex-col" data-testid="main-content">
+        <header
+          className="bg-white shadow-xm border-b px-6 py-4"
+          data-testid="header"
+        >
           <div className="flex items-center justify-end">
-            <Avatar>
+            <Avatar data-testid="user-avatar">
               <AvatarImage src="" alt="User Avatar" />
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
           </div>
         </header>
 
-        <main className="flex-1 p-6 overflow-auto">{children}</main>
+        <main className="flex-1 p-6 overflow-auto" data-testid="page-content">
+          {children}
+        </main>
       </div>
     </div>
   );

@@ -93,7 +93,10 @@ export function SignupForm({ onSubmit }: SignupFormProps) {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-4">
+    <div
+      className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-4"
+      data-testid="signup-form-container"
+    >
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
@@ -108,6 +111,7 @@ export function SignupForm({ onSubmit }: SignupFormProps) {
             variant="outline"
             type="button"
             className="w-full"
+            data-testid="github-signup-button"
             onClick={handleGitHubSignUp}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -134,6 +138,7 @@ export function SignupForm({ onSubmit }: SignupFormProps) {
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-4"
+              data-testid="signup-form"
             >
               <FormField
                 control={form.control}
@@ -145,6 +150,7 @@ export function SignupForm({ onSubmit }: SignupFormProps) {
                       <Input
                         type="email"
                         placeholder="Enter your email"
+                        data-testid="signup-email-input"
                         {...field}
                       />
                     </FormControl>
@@ -162,6 +168,7 @@ export function SignupForm({ onSubmit }: SignupFormProps) {
                       <Input
                         type="password"
                         placeholder="Create a strong password"
+                        data-testid="signup-password-input"
                         {...field}
                       />
                     </FormControl>
@@ -179,6 +186,7 @@ export function SignupForm({ onSubmit }: SignupFormProps) {
                       <Input
                         type="password"
                         placeholder="Confirm your password"
+                        data-testid="confirm-password-input"
                         {...field}
                       />
                     </FormControl>
@@ -189,6 +197,7 @@ export function SignupForm({ onSubmit }: SignupFormProps) {
               <Button
                 type="submit"
                 className="w-full"
+                data-testid="signup-submit-button"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting

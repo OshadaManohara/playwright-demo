@@ -18,6 +18,7 @@ const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
       return (
         <div
           ref={ref}
+          data-testid="loader-spinner"
           className={cn("flex items-center justify-center", className)}
           {...props}
         >
@@ -82,9 +83,17 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
   variant = "spinner",
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center py-12 space-y-4">
+    <div
+      className="flex flex-col items-center justify-center py-12 space-y-4"
+      data-testid="loading-overlay"
+    >
       <Loader size={size} variant={variant} />
-      <p className="text-sm text-muted-foreground">{message}</p>
+      <p
+        className="text-sm text-muted-foreground"
+        data-testid="loading-message"
+      >
+        {message}
+      </p>
     </div>
   );
 };
