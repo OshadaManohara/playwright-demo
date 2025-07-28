@@ -118,7 +118,7 @@ const P = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
       ref={ref}
       className={cn(
         paragraphVariants({ size }),
-        "[&:not(:first-child)]:mt-6",
+        "[&:not(:first-child)]:mt-1",
         className
       )}
       {...props}

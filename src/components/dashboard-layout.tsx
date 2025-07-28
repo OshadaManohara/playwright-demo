@@ -119,7 +119,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="flex h-screen bg-gray-100">
       <div className="w-64 bg-white shadow-sm border-r">
-        <div className="p-6 border-b">
+        <div className="p-6  py-4 border-b">
           <div className="flex items-center space-x-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <svg
@@ -185,7 +185,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
 
       <div className="flex-1 flex flex-col">
-        <header className="bg-white shadow-sm border-b px-6 py-4">
+        <header className="bg-white shadow-xm border-b px-6 py-4">
           <div className="flex items-center justify-end">
             <Avatar>
               <AvatarImage src="" alt="User Avatar" />

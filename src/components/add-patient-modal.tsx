@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+
 import {
   Dialog,
   DialogContent,
@@ -14,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -22,17 +22,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { supabase } from "@/lib/supabaseClient";
 
 const addPatientSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  birthDate: z.string().min(1, "Birth date is required"),
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+  birth_date: z.string().min(1, "Birth date is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  address: z.string().min(5, "Address must be at least 5 characters"),
-  zipCode: z.string().min(5, "ZIP code must be at least 5 characters"),
-  healthPlan: z.string().min(1, "Health plan is required"),
-  medicalNotes: z.string().optional(),
-  rpmDevice: z.string().min(1, "RPM device is required"),
+  address_line_1: z.string().min(1, "Address line 1 is required"),
+  address_line_2: z.string().optional(),
+  address_city: z.string().min(1, "City is required"),
+  zipcode: z.string().min(4, "ZIP code is required"),
+  gender: z.string().min(1, "Gender is required"),
 });
 
 type AddPatientForm = z.infer<typeof addPatientSchema>;
@@ -43,29 +45,7 @@ interface AddPatientModalProps {
   onAddPatient: (patient: AddPatientForm) => void;
 }
 
-const healthPlans = [
-  "Medicare",
-  "Medicaid",
-  "Blue Cross Blue Shield",
-  "Aetna",
-  "Cigna",
-  "UnitedHealthcare",
-  "Humana",
-  "Kaiser Permanente",
-  "Anthem",
-  "Self-Pay",
-];
-
-const rpmDevices = [
-  "Blood Pressure Monitor - Model BP-2000",
-  "Glucose Monitor - Model GM-150",
-  "Heart Rate Monitor - Model HR-300",
-  "Weight Scale - Model WS-400",
-  "Pulse Oximeter - Model PO-250",
-  "Temperature Monitor - Model TM-100",
-  "Activity Tracker - Model AT-500",
-  "Sleep Monitor - Model SM-350",
-];
+const genders = ["Male", "Female", "Other"];
 
 export function AddPatientModal({
   open,
@@ -84,30 +64,55 @@ export function AddPatientModal({
   } = useForm<AddPatientForm>({
     resolver: zodResolver(addPatientSchema),
     defaultValues: {
-      name: "",
-      birthDate: "",
+      first_name: "",
+      last_name: "",
+      birth_date: "",
       email: "",
       phone: "",
-      address: "",
-      zipCode: "",
-      healthPlan: "",
-      medicalNotes: "",
-      rpmDevice: "",
+      address_line_1: "",
+      address_line_2: "",
+      address_city: "",
+      zipcode: "",
+      gender: "",
     },
   });
 
-  const watchedHealthPlan = watch("healthPlan");
-  const watchedRpmDevice = watch("rpmDevice");
+  const watchedGender = watch("gender");
 
   const onSubmit = async (data: AddPatientForm) => {
     setIsSubmitting(true);
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+      const { error } = await supabase.from("patients").insert([
+        {
+          uuid: (await supabase.auth.getUser()).data.user?.id,
+          first_name: data.first_name,
+          last_name: data.last_name,
+          birth_date: data.birth_date,
+          email: data.email,
+          phone: data.phone,
+          address_line_1: data.address_line_1,
+          address_line_2: data.address_line_2,
+          address_city: data.address_city,
+          zipcode: data.zipcode,
+          gender: data.gender,
+          is_active: true,
+        },
+      ]);
+
+      if (error) {
+        console.error("Supabase insert error:", error.message);
+        alert("Failed to add patient. Please try again.");
+        return;
+      }
+
       onAddPatient(data);
+
       reset();
       onOpenChange(false);
     } catch (error) {
-      console.error("Error adding patient:", error);
+      console.error("Unexpected error:", error);
+      alert("An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
     }
@@ -127,41 +132,39 @@ export function AddPatientModal({
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Name */}
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name *</Label>
-              <Input
-                id="name"
-                {...register("name")}
-                placeholder="Enter patient's full name"
-              />
-              {errors.name && (
+              <Label htmlFor="first_name">First Name *</Label>
+              <Input id="first_name" {...register("first_name")} />
+              {errors.first_name && (
                 <p className="text-sm text-destructive">
-                  {errors.name.message}
+                  {errors.first_name.message}
                 </p>
               )}
             </div>
 
-            {/* Birth Date */}
             <div className="space-y-2">
-              <Label htmlFor="birthDate">Birth Date *</Label>
-              <Input id="birthDate" type="date" {...register("birthDate")} />
-              {errors.birthDate && (
+              <Label htmlFor="last_name">Last Name *</Label>
+              <Input id="last_name" {...register("last_name")} />
+              {errors.last_name && (
                 <p className="text-sm text-destructive">
-                  {errors.birthDate.message}
+                  {errors.last_name.message}
                 </p>
               )}
             </div>
 
-            {/* Email */}
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address *</Label>
-              <Input
-                id="email"
-                type="email"
-                {...register("email")}
-                placeholder="patient@example.com"
-              />
+              <Label htmlFor="birth_da">Birth Date *</Label>
+              <Input id="birth_da" type="date" {...register("birth_date")} />
+              {errors.birth_date && (
+                <p className="text-sm text-destructive">
+                  {errors.birth_date.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email *</Label>
+              <Input id="email" type="email" {...register("email")} />
               {errors.email && (
                 <p className="text-sm text-destructive">
                   {errors.email.message}
@@ -169,15 +172,9 @@ export function AddPatientModal({
               )}
             </div>
 
-            {/* Phone */}
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number *</Label>
-              <Input
-                id="phone"
-                type="tel"
-                {...register("phone")}
-                placeholder="(555) 123-4567"
-              />
+              <Label htmlFor="phone">Phone *</Label>
+              <Input id="phone" type="tel" {...register("phone")} />
               {errors.phone && (
                 <p className="text-sm text-destructive">
                   {errors.phone.message}
@@ -185,98 +182,77 @@ export function AddPatientModal({
               )}
             </div>
 
-            {/* Address */}
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="address">Address *</Label>
+            <div className="space-y-2">
+              <Label htmlFor="address_line_1">Address Line 1 *</Label>
               <Input
-                id="address"
-                {...register("address")}
-                placeholder="123 Main St, City, State"
+                id="address_line_1"
+                {...register("address_line_1")}
+                placeholder="123 Main St"
               />
-              {errors.address && (
+              {errors.address_line_1 && (
                 <p className="text-sm text-destructive">
-                  {errors.address.message}
+                  {errors.address_line_1.message}
                 </p>
               )}
             </div>
 
-            {/* ZIP Code */}
             <div className="space-y-2">
-              <Label htmlFor="zipCode">ZIP Code *</Label>
+              <Label htmlFor="adress_line_2">Address Line 2</Label>
               <Input
-                id="zipCode"
-                {...register("zipCode")}
-                placeholder="12345"
+                id="adress_line_2"
+                {...register("address_line_2")}
+                placeholder="Apartment or Suite #"
               />
-              {errors.zipCode && (
+              {errors.address_line_2 && (
                 <p className="text-sm text-destructive">
-                  {errors.zipCode.message}
+                  {errors.address_line_2.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="address_city">City *</Label>
+              <Input
+                id="address_city"
+                {...register("address_city")}
+                placeholder="Colombo"
+              />
+              {errors.address_city && (
+                <p className="text-sm text-destructive">
+                  {errors.address_city.message}
                 </p>
               )}
             </div>
 
-            {/* Health Plan */}
             <div className="space-y-2">
-              <Label>Health Plan *</Label>
+              <Label htmlFor="zipcode">ZIP Code *</Label>
+              <Input id="zipcode" {...register("zipcode")} />
+              {errors.zipcode && (
+                <p className="text-sm text-destructive">
+                  {errors.zipcode.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label>Gender *</Label>
               <Select
-                value={watchedHealthPlan}
-                onValueChange={(value) => setValue("healthPlan", value)}
+                value={watchedGender}
+                onValueChange={(value) => setValue("gender", value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select health plan" />
+                  <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
-                  {healthPlans.map((plan) => (
-                    <SelectItem key={plan} value={plan}>
-                      {plan}
+                  {genders.map((gender) => (
+                    <SelectItem key={gender} value={gender}>
+                      {gender}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              {errors.healthPlan && (
+              {errors.gender && (
                 <p className="text-sm text-destructive">
-                  {errors.healthPlan.message}
-                </p>
-              )}
-            </div>
-
-            {/* RPM Device */}
-            <div className="space-y-2 md:col-span-2">
-              <Label>RPM Device *</Label>
-              <Select
-                value={watchedRpmDevice}
-                onValueChange={(value) => setValue("rpmDevice", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select RPM device" />
-                </SelectTrigger>
-                <SelectContent>
-                  {rpmDevices.map((device) => (
-                    <SelectItem key={device} value={device}>
-                      {device}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {errors.rpmDevice && (
-                <p className="text-sm text-destructive">
-                  {errors.rpmDevice.message}
-                </p>
-              )}
-            </div>
-
-            {/* Medical Notes */}
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="medicalNotes">Medical Notes</Label>
-              <Textarea
-                id="medicalNotes"
-                {...register("medicalNotes")}
-                placeholder="Enter any relevant medical notes or conditions..."
-                rows={4}
-              />
-              {errors.medicalNotes && (
-                <p className="text-sm text-destructive">
-                  {errors.medicalNotes.message}
+                  {errors.gender.message}
                 </p>
               )}
             </div>

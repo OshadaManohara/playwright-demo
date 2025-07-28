@@ -1,94 +1,58 @@
 "use client";
 
 import * as React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { P } from "@/components/ui/typography";
-
-interface PatientVital {
-  type: string;
-  value: string;
-  unit: string;
-  status: "normal" | "high" | "low";
-}
-
-interface Patient {
-  id: string;
-  name: string;
-  age: number;
-  avatar?: string;
-  diseases: string[];
-  recentVitals: PatientVital[];
-  lastVisit: string;
-  nextAppointment?: string;
-}
+import { H3, P } from "@/components/ui/typography";
+import { Patient } from "@/types/patients";
 
 interface PatientCardProps {
   patient: Patient;
   onViewDetails: (patientId: string) => void;
 }
 
-const getInitials = (name: string) => {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
+const getInitials = (first: string = "", last: string = "") =>
+  `${first[0] ?? ""}${last[0] ?? ""}`.toUpperCase();
 
-const getDiseaseVariant = (
-  disease: string
-): "danger" | "warning" | "secondary" => {
-  switch (disease.toLowerCase()) {
-    case "hypertension":
-      return "danger";
-    case "diabetes":
-    case "blood glucose":
-      return "warning";
-    default:
-      return "secondary";
-  }
-};
-
-const getVitalStatusColor = (status: string) => {
-  switch (status) {
-    case "high":
-      return "text-red-600";
-    case "low":
-      return "text-blue-600";
-    case "normal":
-      return "text-green-600";
-    default:
-      return "text-gray-600";
-  }
+const calculateAge = (birthDate?: string) => {
+  if (!birthDate) return undefined;
+  const dob = new Date(birthDate);
+  const ageDiff = Date.now() - dob.getTime();
+  const ageDate = new Date(ageDiff);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 
 export function PatientCard({ patient, onViewDetails }: PatientCardProps) {
+  const fullName = `${patient.first_name ?? ""} ${
+    patient.last_name ?? ""
+  }`.trim();
+  const age = calculateAge(patient.birth_date);
+
   return (
     <Card className="w-full hover:shadow-md transition-shadow">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={patient?.avatar} alt={patient.name} />
               <AvatarFallback className="bg-primary text-primary-foreground">
-                {getInitials(patient.name)}
+                {getInitials(patient.first_name, patient.last_name)}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-semibold text-lg">{patient.name}</h3>
-              <P className="text-sm text-muted-foreground">
-                Age: {patient.age}
-              </P>
+              <H3 className="font-semibold text-lg">{fullName}</H3>
+              {age !== undefined && (
+                <P className="text-sm text-muted-foreground m-0">Age: {age}</P>
+              )}
+              {patient.email && (
+                <P className="text-xs text-muted-foreground">{patient.email}</P>
+              )}
             </div>
           </div>
           <Button
             size="sm"
             variant="outline"
-            onClick={() => onViewDetails(patient.id)}
+            onClick={() => onViewDetails(String(patient.id))}
           >
             <svg
               className="h-4 w-4 mr-1"
@@ -113,58 +77,22 @@ export function PatientCard({ patient, onViewDetails }: PatientCardProps) {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Diseases */}
-        <div>
-          <P className="text-sm font-medium mb-2">Conditions:</P>
-          <div className="flex flex-wrap gap-1">
-            {patient.diseases.map((disease, index) => (
-              <Badge
-                key={index}
-                variant={getDiseaseVariant(disease)}
-                className="text-xs"
-              >
-                {disease}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        {/* Recent Vitals */}
-        <div>
-          <P className="text-sm font-medium mb-2">Recent Vitals:</P>
-          <div className="grid grid-cols-2 gap-2">
-            {patient.recentVitals.slice(0, 4).map((vital, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center text-sm"
-              >
-                <span className="text-muted-foreground">{vital.type}:</span>
-                <span className={getVitalStatusColor(vital.status)}>
-                  {vital.value} {vital.unit}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Visit Information */}
-        <div className="pt-2 border-t">
-          <div className="flex justify-between items-center text-sm">
-            <div>
-              <span className="text-muted-foreground">Last Visit:</span>
-              <span className="ml-1 font-medium">{patient.lastVisit}</span>
-            </div>
-            {patient.nextAppointment && (
-              <div>
-                <span className="text-muted-foreground">Next:</span>
-                <span className="ml-1 font-medium text-primary">
-                  {patient.nextAppointment}
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
+      <CardContent className="space-y-2 mt-2 text-sm">
+        {patient.gender && (
+          <P>
+            <strong>Gender:</strong> {patient.gender}
+          </P>
+        )}
+        {patient.phone && (
+          <P>
+            <strong>Phone:</strong> {patient.phone}
+          </P>
+        )}
+        {patient.address_city && (
+          <P>
+            <strong>City:</strong> {patient.address_city}
+          </P>
+        )}
       </CardContent>
     </Card>
   );
