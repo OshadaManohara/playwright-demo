@@ -70,7 +70,6 @@ const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
 );
 Loader.displayName = "Loader";
 
-// Loading overlay component for full page loading
 interface LoadingOverlayProps {
   message?: string;
   size?: "sm" | "md" | "lg";
@@ -90,7 +89,6 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
   );
 };
 
-// Inline loader for smaller components
 const InlineLoader: React.FC<{ size?: "sm" | "md" | "lg" }> = ({
   size = "sm",
 }) => {

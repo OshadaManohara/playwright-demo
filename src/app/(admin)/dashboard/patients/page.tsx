@@ -55,7 +55,6 @@ export default function PatientsPage() {
 
   const handleViewDetails = (patientId: string) => {
     console.log("View patient details:", patientId);
-    // Navigate to a detailed page or open a modal
   };
 
   const handleAddPatient = () => {
