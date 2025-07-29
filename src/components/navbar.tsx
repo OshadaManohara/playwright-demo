@@ -11,10 +11,17 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav
+      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      data-testid="navbar"
+    >
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link
+          href="/"
+          className="flex items-center space-x-2"
+          data-testid="navbar-logo"
+        >
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <svg
               className="h-5 w-5"
@@ -35,13 +42,16 @@ export function Navbar() {
         </Link>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center space-x-2">
+        <div
+          className="flex items-center space-x-2"
+          data-testid="navbar-actions"
+        >
           {pathname === "/signup" ? (
             <>
               <span className="hidden text-sm text-muted-foreground sm:inline-block">
                 Already have an account?
               </span>
-              <Button asChild variant="ghost">
+              <Button asChild variant="ghost" data-testid="signin-link">
                 <Link href="/">Sign In</Link>
               </Button>
             </>
@@ -50,7 +60,7 @@ export function Navbar() {
               <span className="hidden text-sm text-muted-foreground sm:inline-block">
                 Don&apos;t have an account?
               </span>
-              <Button asChild variant="outline">
+              <Button asChild variant="outline" data-testid="signup-link">
                 <Link href="/signup">Sign Up</Link>
               </Button>
             </>

@@ -30,28 +30,47 @@ export function PatientCard({ patient, onViewDetails }: PatientCardProps) {
   const age = calculateAge(patient.birth_date);
 
   return (
-    <Card className="w-full hover:shadow-md transition-shadow">
+    <Card
+      className="w-full hover:shadow-md transition-shadow"
+      data-testid="patient-card"
+    >
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Avatar className="h-12 w-12">
+          <div
+            className="flex items-center space-x-3"
+            data-testid="patient-info"
+          >
+            <Avatar className="h-12 w-12" data-testid="patient-avatar">
               <AvatarFallback className="bg-primary text-primary-foreground">
                 {getInitials(patient.first_name, patient.last_name)}
               </AvatarFallback>
             </Avatar>
             <div>
-              <H3 className="font-semibold text-lg">{fullName}</H3>
+              <H3 className="font-semibold text-lg" data-testid="patient-name">
+                {fullName}
+              </H3>
               {age !== undefined && (
-                <P className="text-sm text-muted-foreground m-0">Age: {age}</P>
+                <P
+                  className="text-sm text-muted-foreground m-0"
+                  data-testid="patient-age"
+                >
+                  Age: {age}
+                </P>
               )}
               {patient.email && (
-                <P className="text-xs text-muted-foreground">{patient.email}</P>
+                <P
+                  className="text-xs text-muted-foreground"
+                  data-testid="patient-email"
+                >
+                  {patient.email}
+                </P>
               )}
             </div>
           </div>
           <Button
             size="sm"
             variant="outline"
+            data-testid="view-patient-button"
             onClick={() => onViewDetails(String(patient.id))}
           >
             <svg
@@ -77,19 +96,22 @@ export function PatientCard({ patient, onViewDetails }: PatientCardProps) {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-2 mt-2 text-sm">
+      <CardContent
+        className="space-y-2 mt-2 text-sm"
+        data-testid="patient-details"
+      >
         {patient.gender && (
-          <P>
+          <P data-testid="patient-gender">
             <strong>Gender:</strong> {patient.gender}
           </P>
         )}
         {patient.phone && (
-          <P>
+          <P data-testid="patient-phone">
             <strong>Phone:</strong> {patient.phone}
           </P>
         )}
         {patient.address_city && (
-          <P>
+          <P data-testid="patient-city">
             <strong>City:</strong> {patient.address_city}
           </P>
         )}

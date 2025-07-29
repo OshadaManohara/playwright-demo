@@ -64,15 +64,18 @@ export default function PatientsPage() {
   const handleAddPatientSubmit = async () => await fetchPatients();
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6" data-testid="patients-page">
+      <div
+        className="flex items-center justify-between"
+        data-testid="patients-header"
+      >
         <div>
           <H1>Patients</H1>
           <P className="text-muted-foreground">
             Manage and monitor your patients&apos; health information
           </P>
         </div>
-        <Button onClick={handleAddPatient}>
+        <Button onClick={handleAddPatient} data-testid="add-patient-button">
           <svg
             className="h-4 w-4 mr-2"
             fill="none"
@@ -90,12 +93,16 @@ export default function PatientsPage() {
         </Button>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div
+        className="flex items-center space-x-4"
+        data-testid="patients-search"
+      >
         <Input
           placeholder="Search patients by name or email..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-md"
+          data-testid="patients-search-input"
         />
       </div>
 
@@ -106,7 +113,7 @@ export default function PatientsPage() {
           variant="spinner"
         />
       ) : filteredPatients.length === 0 ? (
-        <div className="text-center py-12">
+        <div className="text-center py-12" data-testid="no-patients-state">
           <svg
             className="mx-auto h-12 w-12 text-gray-400"
             fill="none"
@@ -124,7 +131,10 @@ export default function PatientsPage() {
           <P className="text-gray-400">Try adjusting your search criteria</P>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          data-testid="patients-grid"
+        >
           {filteredPatients.map((patient) => (
             <PatientCard
               key={patient.id}
