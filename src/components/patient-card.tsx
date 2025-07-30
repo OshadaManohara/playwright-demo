@@ -79,17 +79,17 @@ export function PatientCard({ patient, onViewDetails }: PatientCardProps) {
       </CardHeader>
       <CardContent className="space-y-2 mt-2 text-sm">
         {patient.gender && (
-          <P>
+          <P data-testid="patient-gender">
             <strong>Gender:</strong> {patient.gender}
           </P>
         )}
         {patient.phone && (
-          <P>
+          <P data-testid="patient-phone">
             <strong>Phone:</strong> {patient.phone}
           </P>
         )}
         {patient.address_city && (
-          <P>
+          <P data-testid="patient-city">
             <strong>City:</strong> {patient.address_city}
           </P>
         )}
