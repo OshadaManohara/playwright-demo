@@ -1,124 +1,104 @@
 import { test, expect } from '@playwright/test';
+import { PatientsPage } from './pages/patients.page';
 
 test.describe('Search Patient Tests', () => {
+  let patientsPage: PatientsPage;
+
   test.beforeEach(async ({ page }) => {
+    patientsPage = new PatientsPage(page);
+    
     // Navigate directly to patients page (authentication is handled by stored session)
-    await page.goto('http://localhost:3001/dashboard/patients');
-    
-    // Wait for the page to load and verify we're on the patients page
-    await expect(page).toHaveURL(/.*\/dashboard\/patients/);
-    
-    // Verify search input is available
-    await expect(page.getByTestId('patients-search-input')).toBeVisible();
+    await patientsPage.navigateTo();
+    await patientsPage.waitForPageLoad();
   });
 
   test('should display all patients by default', async ({ page }) => {
     // Verify search input is empty initially
-    await expect(page.getByTestId('patients-search-input')).toHaveValue('');
+    await patientsPage.verifySearchInputEmpty();
     
     // Verify all 3 patients are displayed by default
-    const patientCards = page.getByTestId('patient-card');
-    await expect(patientCards).toHaveCount(3);
+    await patientsPage.verifyPatientCardCount(3);
     
-    // Verify each patient is visible
-    await expect(page.getByText('Chamari Atapattu')).toBeVisible();
-    await expect(page.getByText('chamari.atapattu@gmail.com')).toBeVisible();
-    
-    await expect(page.getByText('Kusal Mendis')).toBeVisible();
-    await expect(page.getByText('kusal.mendis@gmail.com')).toBeVisible();
-    
-    await expect(page.getByText('Angelo Mathews')).toBeVisible();
-    await expect(page.getByText('angelo.mathews@gmail.com')).toBeVisible();
+    // Verify all patients are visible
+    await patientsPage.verifyAllPatientsVisible();
   });
 
   test('should search patients by name correctly', async ({ page }) => {
-    const searchInput = page.getByTestId('patients-search-input');
-    const patientCards = page.getByTestId('patient-card');
-    
     // Search for "Chamari" - should show only Chamari Atapattu
-    await searchInput.fill('Chamari');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Chamari Atapattu')).toBeVisible();
-    await expect(page.getByText('Kusal Mendis')).not.toBeVisible();
-    await expect(page.getByText('Angelo Mathews')).not.toBeVisible();
+    await patientsPage.searchPatients('Chamari');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Chamari Atapattu');
+    await patientsPage.verifyPatientNotVisible('Kusal Mendis');
+    await patientsPage.verifyPatientNotVisible('Angelo Mathews');
     
     // Search for "Kusal" - should show only Kusal Mendis
-    await searchInput.fill('Kusal');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Kusal Mendis')).toBeVisible();
-    await expect(page.getByText('Chamari Atapattu')).not.toBeVisible();
-    await expect(page.getByText('Angelo Mathews')).not.toBeVisible();
+    await patientsPage.searchPatients('Kusal');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Kusal Mendis');
+    await patientsPage.verifyPatientNotVisible('Chamari Atapattu');
+    await patientsPage.verifyPatientNotVisible('Angelo Mathews');
     
     // Search for "Angelo" - should show only Angelo Mathews
-    await searchInput.fill('Angelo');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Angelo Mathews')).toBeVisible();
-    await expect(page.getByText('Chamari Atapattu')).not.toBeVisible();
-    await expect(page.getByText('Kusal Mendis')).not.toBeVisible();
+    await patientsPage.searchPatients('Angelo');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Angelo Mathews');
+    await patientsPage.verifyPatientNotVisible('Chamari Atapattu');
+    await patientsPage.verifyPatientNotVisible('Kusal Mendis');
     
     // Search for partial name "Mat" - should show Angelo Mathews
-    await searchInput.fill('Mat');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Angelo Mathews')).toBeVisible();
+    await patientsPage.searchPatients('Mat');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Angelo Mathews');
     
     // Clear search - should show all patients again
-    await searchInput.fill('');
-    await expect(patientCards).toHaveCount(3);
-    await expect(page.getByText('Chamari Atapattu')).toBeVisible();
-    await expect(page.getByText('Kusal Mendis')).toBeVisible();
-    await expect(page.getByText('Angelo Mathews')).toBeVisible();
+    await patientsPage.clearSearch();
+    await patientsPage.verifyPatientCardCount(3);
+    await patientsPage.verifyAllPatientsVisible();
   });
 
   test('should search patients by email correctly', async ({ page }) => {
-    const searchInput = page.getByTestId('patients-search-input');
-    const patientCards = page.getByTestId('patient-card');
-    
     // Search by full email - chamari.atapattu@gmail.com
-    await searchInput.fill('chamari.atapattu@gmail.com');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Chamari Atapattu')).toBeVisible();
-    await expect(page.getByText('chamari.atapattu@gmail.com')).toBeVisible();
-    await expect(page.getByText('Kusal Mendis')).not.toBeVisible();
-    await expect(page.getByText('Angelo Mathews')).not.toBeVisible();
+    await patientsPage.searchPatients('chamari.atapattu@gmail.com');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Chamari Atapattu');
+    await patientsPage.verifyEmailVisible('chamari.atapattu@gmail.com');
+    await patientsPage.verifyPatientNotVisible('Kusal Mendis');
+    await patientsPage.verifyPatientNotVisible('Angelo Mathews');
     
     // Search by full email - kusal.mendis@gmail.com
-    await searchInput.fill('kusal.mendis@gmail.com');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Kusal Mendis')).toBeVisible();
-    await expect(page.getByText('kusal.mendis@gmail.com')).toBeVisible();
-    await expect(page.getByText('Chamari Atapattu')).not.toBeVisible();
-    await expect(page.getByText('Angelo Mathews')).not.toBeVisible();
+    await patientsPage.searchPatients('kusal.mendis@gmail.com');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Kusal Mendis');
+    await patientsPage.verifyEmailVisible('kusal.mendis@gmail.com');
+    await patientsPage.verifyPatientNotVisible('Chamari Atapattu');
+    await patientsPage.verifyPatientNotVisible('Angelo Mathews');
     
     // Search by full email - angelo.mathews@gmail.com
-    await searchInput.fill('angelo.mathews@gmail.com');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Angelo Mathews')).toBeVisible();
-    await expect(page.getByText('angelo.mathews@gmail.com')).toBeVisible();
-    await expect(page.getByText('Chamari Atapattu')).not.toBeVisible();
-    await expect(page.getByText('Kusal Mendis')).not.toBeVisible();
+    await patientsPage.searchPatients('angelo.mathews@gmail.com');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Angelo Mathews');
+    await patientsPage.verifyEmailVisible('angelo.mathews@gmail.com');
+    await patientsPage.verifyPatientNotVisible('Chamari Atapattu');
+    await patientsPage.verifyPatientNotVisible('Kusal Mendis');
     
     // Search by partial email - "atapattu"
-    await searchInput.fill('atapattu');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Chamari Atapattu')).toBeVisible();
+    await patientsPage.searchPatients('atapattu');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Chamari Atapattu');
     
     // Search by partial email - "mendis"
-    await searchInput.fill('mendis');
-    await expect(patientCards).toHaveCount(1);
-    await expect(page.getByText('Kusal Mendis')).toBeVisible();
+    await patientsPage.searchPatients('mendis');
+    await patientsPage.verifyPatientCardCount(1);
+    await patientsPage.verifyPatientVisible('Kusal Mendis');
     
     // Search by common domain - "gmail.com" (should show all patients)
-    await searchInput.fill('gmail.com');
-    await expect(patientCards).toHaveCount(3);
-    await expect(page.getByText('Chamari Atapattu')).toBeVisible();
-    await expect(page.getByText('Kusal Mendis')).toBeVisible();
-    await expect(page.getByText('Angelo Mathews')).toBeVisible();
+    await patientsPage.searchPatients('gmail.com');
+    await patientsPage.verifyPatientCardCount(3);
+    await patientsPage.verifyAllPatientsVisible();
     
     // Clear search - should show all patients again
-    await searchInput.fill('');
-    await expect(patientCards).toHaveCount(3);
-    await expect(page.getByText('Chamari Atapattu')).toBeVisible();
-    await expect(page.getByText('Kusal Mendis')).toBeVisible();
-    await expect(page.getByText('Angelo Mathews')).toBeVisible();
+    await patientsPage.clearSearch();
+    await patientsPage.verifyPatientCardCount(3);
+    await patientsPage.verifyAllPatientsVisible();
   });
 });

@@ -37,6 +37,16 @@ export default defineConfig({
     // Setup project
     { name: 'setup', testMatch: /.*\.setup\.ts/ },
     
+    // Login tests project (without authentication state)
+    {
+      name: 'chromium-login',
+      use: { 
+        ...devices['Desktop Chrome'],
+        // No stored auth state for login tests
+      },
+      testMatch: '**/login.spec.ts',
+    },
+    
     {
       name: 'chromium',
       use: { 
@@ -45,6 +55,7 @@ export default defineConfig({
         storageState: 'e2e/.auth/user.json',
       },
       dependencies: ['setup'],
+      testIgnore: '**/login.spec.ts', // Exclude login tests from authenticated sessions
     },
     
     // {
