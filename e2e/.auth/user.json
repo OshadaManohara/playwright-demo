@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3001",
+      "localStorage": [
+        {
+          "name": "sb-hhfruoayizrmmbdkjkwl-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsImtpZCI6IjZwa3I4MlZsQ002S1hZb2YiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2hoZnJ1b2F5aXpybW1iZGtqa3dsLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIxMTU4MGM0Yy1kN2I1LTQ3ZmYtOTczNy1mYzJmMmUyMmViZTkiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzUzOTEyNDMxLCJpYXQiOjE3NTM5MDg4MzEsImVtYWlsIjoic2FoYW4uYW1hcnNoYSt0ZXN0MkByb290Y29kZS5pbyIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZW1haWwiOiJzYWhhbi5hbWFyc2hhK3Rlc3QyQHJvb3Rjb2RlLmlvIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiMTE1ODBjNGMtZDdiNS00N2ZmLTk3MzctZmMyZjJlMjJlYmU5In0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3NTM5MDg4MzF9XSwic2Vzc2lvbl9pZCI6ImQ0MGZiZDZjLWNiMTUtNGU4Zi1hOGM4LTVkMjgwYjI4ZDBlMyIsImlzX2Fub255bW91cyI6ZmFsc2V9.TYQncsTYVygayDceqW1tAMG2xGJtaFyiCh-sc-ARQKg\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1753912431,\"refresh_token\":\"kql5ok2zarpb\",\"user\":{\"id\":\"11580c4c-d7b5-47ff-9737-fc2f2e22ebe9\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"sahan.amarsha+test2@rootcode.io\",\"email_confirmed_at\":\"2025-07-30T08:14:55.853107Z\",\"phone\":\"\",\"confirmed_at\":\"2025-07-30T08:14:55.853107Z\",\"last_sign_in_at\":\"2025-07-30T20:53:51.385379437Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"sahan.amarsha+test2@rootcode.io\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"11580c4c-d7b5-47ff-9737-fc2f2e22ebe9\"},\"identities\":[{\"identity_id\":\"ad8428b2-c32a-4ed1-93b9-5e10581de5a0\",\"id\":\"11580c4c-d7b5-47ff-9737-fc2f2e22ebe9\",\"user_id\":\"11580c4c-d7b5-47ff-9737-fc2f2e22ebe9\",\"identity_data\":{\"email\":\"sahan.amarsha+test2@rootcode.io\",\"email_verified\":false,\"phone_verified\":false,\"sub\":\"11580c4c-d7b5-47ff-9737-fc2f2e22ebe9\"},\"provider\":\"email\",\"last_sign_in_at\":\"2025-07-30T08:14:55.807748Z\",\"created_at\":\"2025-07-30T08:14:55.80845Z\",\"updated_at\":\"2025-07-30T08:14:55.80845Z\",\"email\":\"sahan.amarsha+test2@rootcode.io\"}],\"created_at\":\"2025-07-30T08:14:55.745614Z\",\"updated_at\":\"2025-07-30T20:53:51.40565Z\",\"is_anonymous\":false}}"
+        }
+      ]
+    }
+  ]
+}
