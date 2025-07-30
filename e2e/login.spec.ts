@@ -27,3 +27,12 @@ test("Login to the system", async ({ page }) => {
     "Invalid login credentials"
   );
 });
+
+test("Verify login using correct username and password", async ({ page }) => {
+  await page.goto("http://localhost:3000/");
+  await page.getByTestId("email-input").click();
+  await page.getByTestId("email-input").fill("osadamanohara@gmail.com");
+  await page.getByTestId("email-input").press("Tab");
+  await page.getByTestId("password-input").fill("Osaninja123");
+  await page.getByTestId("login-submit-button").click();
+});
