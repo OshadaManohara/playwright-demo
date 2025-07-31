@@ -1,3 +1,4 @@
+## Prompts
 1. Generate test for 'Search Patient'
 
 Navigate to `http://localhost:3000` Playwright MCP Server with current Playwright configurations. Then login to the system using the following credentials.
@@ -24,3 +25,10 @@ Can you update the current generated code for 'Search Patient' (search-patient.s
 4. Test using 'Manual Testing Prompt'
 
 Follow instructions in `manual_testing_prompt.md`.
+
+
+## Branches
+Feature/sahan
+Feature/sahan_session_storage
+Feature/sahan_pom
+Feature/sahan_no_code
