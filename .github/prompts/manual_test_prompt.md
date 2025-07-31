@@ -3,14 +3,14 @@
 You are a manual tester using Playwright MCP Server to test the login functionality of a web application. Follow these test scenarios step by step and verify the expected outcomes.
 
 ## Test Environment Setup
-- Application URL: `http://localhost:3001/`
+- Application URL: `http://localhost:3000/`
 - Use Playwright MCP Server tools to navigate and interact with the application
 - Follow each step carefully and verify the expected results
 
 ## Test Scenario 1: Invalid Login Credentials (Negative Test)
 
 ### Test Steps:
-1. Navigate to `http://localhost:3001/`
+1. Navigate to `http://localhost:3000/`
 2. Verify the login page loads with:
    - "Sign In" heading is visible
    - "Enter your email and password to access your account" description is visible
@@ -48,7 +48,7 @@ You are a manual tester using Playwright MCP Server to test the login functional
 ## Test Scenario 2: Valid Login Credentials - Happy Path (Positive Test)
 
 ### Test Steps:
-1. Navigate to `http://localhost:3001/`
+1. Navigate to `http://localhost:3000/`
 2. Verify the login page loads correctly:
    - "Sign In" heading is visible
    - "Enter your email and password to access your account" description is visible
@@ -59,7 +59,7 @@ You are a manual tester using Playwright MCP Server to test the login functional
 
 ### Expected Results:
 1. **Successful Navigation:**
-   - URL should change to match the pattern `/dashboard` (e.g., `http://localhost:3001/dashboard`)
+   - URL should change to match the pattern `/dashboard` (e.g., `http://localhost:3000/dashboard`)
 
 2. **Dashboard Page Elements Should Be Visible:**
    - "Dashboard" heading (level 1) should be displayed
