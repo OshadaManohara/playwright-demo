@@ -9,4 +9,4 @@
 - Only after all steps are completed, emit a Playwright Typescript test that use "@playwright/test" library.
 - Save generated test file in the e2e directory.
 - Use the following format for the test file name: `<scenario_name>.spec.ts`
-- Execute the test file and iterate until the test passes and only use chromium as the browser.
+- Execute the test file once and only use Chromium as the browser with headed mode. Don't run the test with timeouts.

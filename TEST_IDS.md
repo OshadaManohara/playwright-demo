@@ -73,6 +73,7 @@ This document lists all the `data-testid` attributes added throughout the applic
 
 - `login-form-container` - Login page container
 - `github-signin-button` - GitHub sign in button
+- `login-card-title` - Signin Card title
 - `login-form` - Login form element
 - `email-input` - Email input field
 - `password-input` - Password input field
