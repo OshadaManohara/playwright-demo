@@ -1,0 +1,7 @@
+Generate the Playwright test for the following scenario:
+
+1. Navigate to the "http://localhost:3000/"
+2. Try to log in using following email and passwords:
+2.1 email: "testUser@gmail.com"
+2.2 password: "test#123"
+3. And verify that login got failed with error message
