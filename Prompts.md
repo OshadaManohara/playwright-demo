@@ -1,3 +1,7 @@
+## Sample Credentials
+sahan.amarsha+test2@rootcode.io
+Test@123
+
 ## Prompts
 1. Generate test for 'Search Patient'
 
