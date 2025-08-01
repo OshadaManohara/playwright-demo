@@ -93,3 +93,130 @@ You are a manual tester using Playwright MCP Server to test the login functional
 - Take screenshots if any unexpected behavior occurs
 - Document any deviations from expected results
 - Verify that the application maintains security best practices (password masking, etc.)
+
+---
+
+## Test Report Generation
+
+After completing all test scenarios, generate a comprehensive markdown test report and save it in the `.github/reports` directory with the filename format: `manual-test-report-YYYY-MM-DD-HHMMSS.md`
+
+### Report Template:
+
+```markdown
+# Manual Testing Report - Login Functionality
+
+**Test Date:** [Current Date and Time]
+**Tester:** [AI Assistant/Manual Tester Name]
+**Application URL:** http://localhost:3000/
+**Browser:** [Browser Information from Playwright]
+
+## Executive Summary
+Brief overview of testing results and overall application status.
+
+## Test Environment
+- **Application URL:** http://localhost:3000/
+- **Testing Tool:** Playwright MCP Server
+- **Test Duration:** [Start Time] - [End Time]
+
+## Test Scenarios Executed
+
+### Test Scenario 1: Invalid Login Credentials (Negative Test)
+**Status:** ✅ PASSED / ❌ FAILED
+**Execution Time:** [Duration]
+
+#### Test Steps Performed:
+- [List each step with status]
+
+#### Expected Results:
+- [List expected outcomes]
+
+#### Actual Results:
+- [Document what actually happened]
+
+#### Issues Found:
+- [Any deviations or problems encountered]
+
+#### Screenshots:
+- [Include any screenshots taken during testing]
+
+#### Console Messages:
+- [Document any relevant console messages/errors]
+
+---
+
+### Test Scenario 2: Valid Login Credentials - Happy Path (Positive Test)
+**Status:** ✅ PASSED / ❌ FAILED
+**Execution Time:** [Duration]
+
+#### Test Steps Performed:
+- [List each step with status]
+
+#### Expected Results:
+- [List expected outcomes]
+
+#### Actual Results:
+- [Document what actually happened]
+
+#### Issues Found:
+- [Any deviations or problems encountered]
+
+#### Screenshots:
+- [Include any screenshots taken during testing]
+
+#### Console Messages:
+- [Document any relevant console messages/errors]
+
+---
+
+## Additional Verification Results
+
+### Browser Console Analysis
+- [Document any JavaScript errors or warnings]
+- [Note any performance issues]
+
+### User Interface Assessment
+- [Confirm responsive design works correctly]
+- [Verify element alignment and visual consistency]
+
+### Security Verification
+- [Confirm password masking is working]
+- [Verify no sensitive data exposed in console]
+
+## Summary of Findings
+
+### ✅ Passed Tests
+- [List all successful test scenarios]
+
+### ❌ Failed Tests
+- [List any failed test scenarios with details]
+
+### ⚠️ Issues/Concerns
+- [Document any concerns or recommendations]
+
+## Recommendations
+- [Provide suggestions for improvements]
+- [Note any areas that need attention]
+
+## Test Coverage
+- **Login with invalid credentials:** ✅ / ❌
+- **Login with valid credentials:** ✅ / ❌
+- **Error message display:** ✅ / ❌
+- **Successful navigation:** ✅ / ❌
+- **Dashboard element verification:** ✅ / ❌
+- **Navigation menu functionality:** ✅ / ❌
+- **User controls accessibility:** ✅ / ❌
+
+## Conclusion
+[Overall assessment of the login functionality and readiness for production]
+```
+
+### Instructions for Report Generation:
+1. Use the template above as a basis for your report
+2. Fill in all sections with actual test results and observations
+3. Include timestamps using the current date and time
+4. Save the report in `.github/reports/` directory
+5. Use descriptive filenames with timestamp: `manual-test-report-YYYY-MM-DD-HHMMSS.md`
+6. Include any screenshots taken during testing
+7. Document all console messages, errors, and warnings observed
+8. Provide clear status indicators (✅ PASSED, ❌ FAILED, ⚠️ WARNING)
+9. Include recommendations for any issues found
